@@ -38,17 +38,7 @@ export class TodoController {
   ): Promise<TodoDto> {
     return this.todoService.update(+id, updateTodoDto);
   }
-
-  @Patch(':id/done')
-  async markAsDone(@Param('id') id: string): Promise<TodoDto> {
-    return this.todoService.markAsDone(+id);
-  }
-
-  @Patch(':id/pending')
-  async markAsPending(@Param('id') id: string): Promise<TodoDto> {
-    return this.todoService.markAsPending(+id);
-  }
-
+  
   @Patch(':id/description')
   async updateDescription(
     @Param('id') id: string,
