@@ -1,5 +1,5 @@
-import { Category } from 'src/category/category.entity';
-import { TodoStatus } from '../enums/todo-status';
+import { Category } from 'src/category/entities/category.entity';
+import { TodoStatus } from '../../enums/todo-status';
 
 export interface TodoDto {
   id: number;

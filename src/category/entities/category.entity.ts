@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { BaseEntity } from '../todo/entities/base.entity';
-import { Todo } from '../todo/entities/todo.entity';
+import { BaseEntity } from '../../base/entities/base.entity';
+import { Todo } from '../../todo/entities/todo.entity';
 
 @Entity('category')
 export class Category extends BaseEntity {
