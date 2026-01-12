@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../entities/base.entity';
 import { TodoStatus } from '../dto/enums/todo-status';
-import { Category } from 'src/todo/category/category.entity';
+import { Category } from '../../category/category.entity';
 
 @Entity('todo')
 export class Todo extends BaseEntity {

@@ -1,4 +1,4 @@
-import { Category } from 'src/todo/category/category.entity';
+import { Category } from 'src/category/category.entity';
 import { TodoStatus } from '../enums/todo-status';
 
 export interface TodoDto {
