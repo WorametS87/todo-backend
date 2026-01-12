@@ -38,14 +38,6 @@ export class TodoController {
   ): Promise<TodoDto> {
     return this.todoService.update(+id, updateTodoDto);
   }
-  
-  @Patch(':id/description')
-  async updateDescription(
-    @Param('id') id: string,
-    @Body() description: { description: string },
-  ): Promise<TodoDto> {
-    return this.todoService.updateDescription(+id, description.description);
-  }
 
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<void> {

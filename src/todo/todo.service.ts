@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Todo } from './entities/todo.entity';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
+import { Category } from 'src/category/entities/category.entity';
 
 @Injectable()
 export class TodoService {
@@ -12,9 +13,18 @@ export class TodoService {
     private readonly repo: Repository<Todo>,
   ) {}
 
-  create(dto: CreateTodoDto) {
-    return this.repo.save(this.repo.create(dto));
+  async create(dto: CreateTodoDto) {
+    const todo = this.repo.create({
+      title: dto.title,
+      description: dto.description,
+    });
+  if (dto.categoryId) {
+    todo.category = { id: dto.categoryId } as Category;
   }
+
+  return this.repo.save(todo);
+}
+
 
   findAll() {
     return this.repo.find();
@@ -36,22 +46,5 @@ export class TodoService {
     const todo = await this.findOne(id);
     return this.repo.remove(todo);
   }
-
-  async markAsDone(id: number) {
-    const todo = await this.findOne(id);
-    todo.markAsDone();
-    return this.repo.save(todo);
-  }
-
-  async markAsPending(id: number) {
-    const todo = await this.findOne(id);
-    todo.markAsPending();
-    return this.repo.save(todo);
-  }
-
-  async updateDescription(id: number, description: string) {
-    const todo = await this.findOne(id);
-    todo.updateDescription(description);
-    return this.repo.save(todo);
-  }
+  
 }
