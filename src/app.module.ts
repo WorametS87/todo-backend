@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TodoModule } from './todo/todo.module';
 import { CategoryModule } from './category/category.module';
-import { AppController } from './app.controller';
 
 @Module({
   imports: [
