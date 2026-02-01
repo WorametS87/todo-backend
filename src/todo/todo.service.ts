@@ -24,24 +24,55 @@ export class TodoService {
       todo.category = { id: dto.categoryId } as Category;
     }
 
-    return this.repo.save(todo);
+    const savedTodo = await this.repo.save(todo);
+    // Reload with relations to include category
+    return this.repo.findOne({
+      where: { id: savedTodo.id },
+      relations: ['category'],
+    });
   }
 
 
-  findAll() {
-    return this.repo.find();
+  findAll(categoryId?: number) {
+    if (categoryId) {
+      return this.repo.find({
+        where: { category: { id: categoryId } },
+        relations: ['category'],
+      });
+    }
+    return this.repo.find({ relations: ['category'] });
   }
 
   async findOne(id: number) {
-    const todo = await this.repo.findOneBy({ id });
+    const todo = await this.repo.findOne({
+      where: { id },
+      relations: ['category'],
+    });
     if (!todo) throw new NotFoundException();
     return todo;
   }
 
   async update(id: number, dto: UpdateTodoDto) {
     const todo = await this.findOne(id);
-    Object.assign(todo, dto);
-    return this.repo.save(todo);
+    // Handle category update
+    if (dto.categoryId !== undefined) {
+      if (dto.categoryId) {
+        todo.category = { id: dto.categoryId } as Category;
+      } else {
+        todo.category = null;
+      }
+    }
+    // Update other fields
+    if (dto.title !== undefined) todo.title = dto.title;
+    if (dto.description !== undefined) todo.description = dto.description;
+    if (dto.status !== undefined) todo.status = dto.status;
+    
+    const updatedTodo = await this.repo.save(todo);
+    // Reload with relations to include category
+    return this.repo.findOne({
+      where: { id: updatedTodo.id },
+      relations: ['category'],
+    });
   }
 
   async remove(id: number) {

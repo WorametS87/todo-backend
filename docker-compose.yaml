@@ -1,6 +1,7 @@
 services:
   postgres:
     image: postgres:16
+    container_name: todo-postgres
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -10,9 +11,12 @@ services:
       - "5433:5432"
     volumes:
       - ./db-data:/var/lib/postgresql/data
+    networks:
+      - todo-network
 
   pgadmin:
     image: dpage/pgadmin4:latest
+    container_name: todo-pgadmin
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@local.dev
@@ -21,3 +25,9 @@ services:
       - "8082:80"
     depends_on:
       - postgres
+    networks:
+      - todo-network
+
+networks:
+  todo-network:
+    driver: bridge

@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
@@ -22,8 +23,8 @@ export class TodoController {
   }
 
   @Get()
-  findAll(): Promise<TodoDto[]> {
-    return this.todoService.findAll();
+  findAll(@Query('categoryId') categoryId?: string): Promise<TodoDto[]> {
+    return this.todoService.findAll(categoryId ? +categoryId : undefined);
   }
 
   @Get(':id')
