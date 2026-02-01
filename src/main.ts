@@ -17,13 +17,24 @@ async function bootstrap() {
     .build();
 
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or Postman)
+      if (!origin) return callback(null, true);
+      
+      // Allow localhost on any port
+      if (origin.startsWith('http://localhost:')) {
+        return callback(null, true);
+      }
+      
+      // Deny everything else
+      callback(new Error('Not allowed by CORS'));
+    },
   });
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  const port = 3000;
+  const port = 3002;
   await app.listen(port);
 
   console.log('-----------------------------');

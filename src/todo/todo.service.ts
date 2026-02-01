@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Todo } from './entities/todo.entity';
+import { TodoStatus } from 'src/enums/todo-status';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { Category } from 'src/category/entities/category.entity';
@@ -11,19 +12,20 @@ export class TodoService {
   constructor(
     @InjectRepository(Todo)
     private readonly repo: Repository<Todo>,
-  ) {}
+  ) { }
 
   async create(dto: CreateTodoDto) {
     const todo = this.repo.create({
       title: dto.title,
       description: dto.description,
+      status: dto.status || TodoStatus.PENDING,
     });
-  if (dto.categoryId) {
-    todo.category = { id: dto.categoryId } as Category;
-  }
+    if (dto.categoryId) {
+      todo.category = { id: dto.categoryId } as Category;
+    }
 
-  return this.repo.save(todo);
-}
+    return this.repo.save(todo);
+  }
 
 
   findAll() {
@@ -46,5 +48,5 @@ export class TodoService {
     const todo = await this.findOne(id);
     return this.repo.remove(todo);
   }
-  
+
 }
