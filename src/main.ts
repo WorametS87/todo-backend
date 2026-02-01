@@ -16,6 +16,10 @@ async function bootstrap() {
     .setVersion('1.0')
     .build();
 
+  app.enableCors({
+    origin: 'http://localhost:5173',
+  });
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
@@ -26,5 +30,6 @@ async function bootstrap() {
   console.log(`API running at: http://localhost:${port}`);
   console.log(`Swagger UI:     http://localhost:${port}/docs`);
   console.log('-----------------------------');
+
 }
 bootstrap();
